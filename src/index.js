@@ -13,8 +13,8 @@ firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
 const provider = new firebase.auth.GoogleAuthProvider();
 let loggedIn = false;
 firebase.auth().signInWithPopup(provider).then(({ user }) => {
-    return user.getIdToken().then(async (idToken) => {
-        let result = await fetch("https://back.testing.com:3000/login", {
+    user.getIdToken().then(async (idToken) => {
+        let result = await fetch("https://back.catteam.tk/login", {
             method: "post",
             credentials: "include",
             headers: {
@@ -23,21 +23,21 @@ firebase.auth().signInWithPopup(provider).then(({ user }) => {
             body: JSON.stringify({ idToken })
         });
         loggedIn = result.status == 200;
-        if (result.ok && result.status == 401) {
-            alert('Usted no tiene permiso de autorización')
+        if (result.status == 401) {
+            alert('Usted no tiene autorización')
+        } else if (result.status == 400) {
+            alert('Usted ya está autenticado');
+        }
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const origin = urlParams.get("origin");
+        if (origin != null) {
+            const url = `${origin}?loggedIn=${loggedIn}`;
+            window.location.href = url;
+        } else {
+            alert("Dirección de origen no indicada");
         }
     })
 }).catch((error) => {
     alert(error);
-}).then(() => {
-    firebase.auth().signOut();
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const origin = urlParams.get("origin");
-    if (origin != null) {
-        const url = `${origin}?loggedIn=${loggedIn}`;
-        window.location.href = url;
-    } else {
-        alert("Dirección de origen no indicada");
-    }
 })

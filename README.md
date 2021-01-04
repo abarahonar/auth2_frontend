@@ -1,24 +1,22 @@
-# auth2_front
+# Auth2 Frontend
 
-## Project setup
-```
-npm install
-```
+## Run
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+It expects a ssl certificate called `server.cert` and a ssl key called `server.key` to be in the `/certs/` folder.
 
-### Compiles and minifies for production
-```
-npm run build
-```
+You have to change the `server_name` configuration in the `nginx.conf` file, in lines 18 and 23.
 
-### Lints and fixes files
-```
-npm run lint
+The firebase's configuration may also need to be changed (lines 2 to 8).
+
+```sh
+sudo docker run -it --rm -d --name auth2 \
+    -p 443:443 -p 80:80 \
+    -v $(pwd)/assets/:/certs/ \
+    -v $(pwd)/src/:/usr/share/nginx/html/ \
+    -v $(pwd)/nginx.conf:/etc/nginx/nginx.conf \
+    nginx:alpine
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Known errors
+
+* On `TypeError`, the server is unreachable.

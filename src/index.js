@@ -22,7 +22,7 @@ firebase.auth().signInWithPopup(provider).then(({ user }) => {
             },
             body: JSON.stringify({ idToken })
         });
-        loggedIn = result.status == 200;
+        loggedIn = result.status == 200 || result.status == 400;
         if (result.status == 401) {
             alert('Usted no tiene autorización')
         } else if (result.status == 400) {

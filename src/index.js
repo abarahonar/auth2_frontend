@@ -37,6 +37,8 @@ firebase.auth().signInWithPopup(provider).then(({ user }) => {
         } else {
             alert("Dirección de origen no indicada");
         }
+    }).catch((error) => {
+        alert(error);
     })
 }).catch((error) => {
     alert(error);

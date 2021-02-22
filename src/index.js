@@ -41,7 +41,7 @@ firebase.auth().signInWithPopup(provider).then(({ user }) => {
         if (origin != null && !error) {
             const url = `${origin}?loggedIn=${loggedIn}`;
             window.location.href = url;
-        } else if (origin == null) {
+        } else if (origin == null && !error) {
             alert("Dirección de origen no indicada");
         }
     }).catch((error) => {

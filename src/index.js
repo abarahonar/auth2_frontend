@@ -23,18 +23,25 @@ firebase.auth().signInWithPopup(provider).then(({ user }) => {
             body: JSON.stringify({ idToken })
         });
         loggedIn = result.status == 200 || result.status == 400;
+        let error = false;
         if (result.status == 401) {
             alert('Usted no tiene autorización')
         } else if (result.status == 400) {
             alert('Usted ya está autenticado');
+        } else if (result.status == 500) {
+            alert('Error interno del servidor');
+            error = true;
+        } else if (result.status != 200) {
+            alert('Error')
+            error = true;
         }
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const origin = urlParams.get("origin");
-        if (origin != null) {
+        if (origin != null && !error) {
             const url = `${origin}?loggedIn=${loggedIn}`;
             window.location.href = url;
-        } else {
+        } else if (origin == null) {
             alert("Dirección de origen no indicada");
         }
     }).catch((error) => {

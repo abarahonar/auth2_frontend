@@ -13,3 +13,5 @@ sudo docker run -it --rm -d --name auth2 \
     -p 443:443 -p 80:80 \
     auth2_frontend
 ```
+## Documentation
+[Link](https://docs.google.com/document/d/1lF-Oo39UGKvF1jVQyOZyYOtqFlvhjIsCm-c1tqYTX4U/edit?usp=sharing)
